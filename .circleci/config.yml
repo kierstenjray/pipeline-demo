@@ -298,7 +298,7 @@ workflows:
       - build-backend
       - test-frontend:
           requires: [build-frontend]
-          context: slack-secrets
+          # context: slack-secrets
       - test-backend:
           requires: [build-backend]
       - scan-backend:
