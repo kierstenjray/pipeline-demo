@@ -173,6 +173,9 @@ jobs:
       - image: ansible/ansible:ubuntu1404
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "34:33:86:6c:cf:c3:95:67:7d:e7:91:8a:c0:af:15:a1"
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace
