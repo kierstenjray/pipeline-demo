@@ -170,7 +170,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: ansible/ansible:ubuntu1404
+      - image: ansible/centos7-ansible:stable
     steps:
       - checkout
       - add_ssh_keys:
