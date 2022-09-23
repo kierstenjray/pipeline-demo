@@ -179,12 +179,10 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: project/.circleci/ansible
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
       - run:
           name: Install dependencies
           command: |
+            cat project/.circleci/ansible/inventory.txt
             # Your code here
             # exit 1
       - run:
