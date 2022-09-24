@@ -26,6 +26,12 @@
     raw: apt -y update && apt install -y python-minimal
     when: check_python.rc != 0
 
+  - name: "Install nodejs"
+    apt:
+      update_cache: yes
+      name: nodejs
+      state: present    
+
     # Your code here
 
   # Get the environment variables from CircleCI and add to the EC2 instance
