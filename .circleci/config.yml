@@ -184,7 +184,7 @@ jobs:
           #  Verify tar, gzip, ansible, or awscli installs.
           command: |
             #Install unzip for aws installation
-            yum install zip unzip
+            yum -y install zip unzip
             #Test aws command
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
