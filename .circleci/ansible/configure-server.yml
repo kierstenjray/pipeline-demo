@@ -32,12 +32,12 @@
       name: nodejs
       state: present    
 
-  - name: install NPM
+  - name: "install NPM"
         shell: npm i
         args:
           chdir: /home/ubuntu
 
-  - name: Install PM2
+  - name: "Install PM2"
     npm:
       name: pm2
       global: yes
