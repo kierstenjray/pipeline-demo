@@ -30,7 +30,7 @@
     apt:
       update_cache: yes
       name: nodejs
-      state: present    
+      state: present
 
   - name: "Install npm"
     apt:
@@ -38,17 +38,10 @@
       name: npm
       state: present
 
-  # - name: "install NPM"
-  #       shell: npm i
-  #       args:
-  #         chdir: /home/ubuntu
-
   - name: "Install PM2"
     npm:
       name: pm2
       global: yes
-
-    # Your code here
 
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
