@@ -184,7 +184,7 @@ jobs:
           #  Verify tar, gzip, ansible, or awscli installs.
           command: |
             #Test tar command
-            tar --help
+            # tar --help
             gzip --help
             ansible --help
             awscli --help 
