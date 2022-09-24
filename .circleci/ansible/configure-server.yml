@@ -32,10 +32,16 @@
       name: nodejs
       state: present    
 
-  - name: "install NPM"
-        shell: npm i
-        args:
-          chdir: /home/ubuntu
+  - name: "Install npm"
+    apt:
+      update_cache: yes
+      name: npm
+      state: present
+
+  # - name: "install NPM"
+  #       shell: npm i
+  #       args:
+  #         chdir: /home/ubuntu
 
   - name: "Install PM2"
     npm:
