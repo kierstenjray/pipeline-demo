@@ -183,6 +183,11 @@ jobs:
           name: Install dependencies
           #  Verify tar, gzip, ansible, or awscli installs.
           command: |
+            #Test tar command
+            tar --help
+            gzip --help
+            ansible --help
+            awscli --help 
             cat .circleci/ansible/inventory.txt
             # Your code here
             # exit 1
