@@ -185,6 +185,7 @@ jobs:
           command: |
             #Install unzip for aws installation
             yum -y install zip unzip
+            yum -y install zip sudo
             #Test aws command
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
