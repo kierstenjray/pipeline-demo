@@ -186,7 +186,7 @@ jobs:
             #Test tar command
             # tar --help
             # gzip --help
-            ansible --help
+            # ansible --help
             awscli --help 
             cat .circleci/ansible/inventory.txt
             # Your code here
