@@ -157,9 +157,9 @@ jobs:
             cat ~/project/.circleci/ansible/inventory.txt
             # exit 1
       - persist_to_workspace:
-          root: ~/
+          root: ~/project/.circleci/ansible/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - inventory.txt
       - run:
           name: Rollback and delete on failure
           command: |
@@ -178,11 +178,12 @@ jobs:
             - "34:33:86:6c:cf:c3:95:67:7d:e7:91:8a:c0:af:15:a1"
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
-          at: project/.circleci/ansible
+          at: .circleci/ansible
       - run:
           name: Install dependencies
+          #  Verify tar, gzip, ansible, or awscli installs.
           command: |
-            cat project/.circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
             # Your code here
             # exit 1
       - run:
