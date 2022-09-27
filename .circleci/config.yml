@@ -206,7 +206,7 @@ jobs:
             # exit 1
           when: on_fail
 
-run-migrations:
+  run-migrations:
     docker:
       - image: circleci/node:13.8.0
     steps:
