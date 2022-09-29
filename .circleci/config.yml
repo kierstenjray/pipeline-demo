@@ -197,6 +197,10 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
             # exit 1
+      - persist_to_workspace:
+          root: ~/project/.circleci/ansible/
+          paths:
+            - inventory.txt
       # Here's where you will add some code to rollback on failure      
       - run:
           name: Rollback and delete on failure
@@ -217,6 +221,9 @@ jobs:
             sudo apt-get -y -qq update
             sudo apt-get -qq install awscli
             sudo apt-get -y -qq install python3
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .circleci/ansible
       - run:
           name: create .env files
           command: |
