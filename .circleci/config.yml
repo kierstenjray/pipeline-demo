@@ -252,7 +252,7 @@ jobs:
             echo "Check inventory file"
             cat ~/project/.circleci/ansible/inventory.txt
             cat mig_results.txt
-            exit 1
+            # exit 1
       - persist_to_workspace:
           root: ~/project/.circleci/ansible/
           paths:
@@ -413,8 +413,8 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
