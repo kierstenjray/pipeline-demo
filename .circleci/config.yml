@@ -248,6 +248,7 @@ jobs:
             echo "Check backend contents"
             ls -ltr ~/project/backend
             cat mig_results.txt
+            exit 1
       # - persist_to_workspace:
       #     root: ~/project/.circleci/ansible/
       #     paths:
