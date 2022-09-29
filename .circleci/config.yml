@@ -306,6 +306,10 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - persist_to_workspace:
+          root: ~/project/.circleci/ansible/
+          paths:
+            - inventory.txt
       - run:
           name: Rollback and delete on failure
           command: |
@@ -314,24 +318,50 @@ jobs:
             # exit 1
           when: on_fail
 
-
-
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  deploy-backend:
+    docker:
+      - image: ansible/centos7-ansible:stable
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "34:33:86:6c:cf:c3:95:67:7d:e7:91:8a:c0:af:15:a1"
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .circleci/ansible
+      - run:
+          name: Install dependencies
+          #  Verify tar, gzip, ansible, or awscli installs.
+          command: |
+            #Install unzip for aws installation
+            yum -y install zip unzip
+            yum -y install zip sudo
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            cat .circleci/ansible/inventory.txt
+            # exit 1
+      - run:
+          name: Deploy backend
+          command: |
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      - run:
+          name: Rollback and delete on failure
+          command: |
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            # exit 1
+          when: on_fail
+      
 
 #   smoke-test:
 #     docker:
