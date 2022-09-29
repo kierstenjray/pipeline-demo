@@ -236,15 +236,14 @@ jobs:
           name: Run migrations
           no_output_timeout: 10m
           command: |
-            cat .circleci/ansible/inventory.txt
             cd backend
             export
             npm install
             npm run build
             npm run migrations > mig_results.txt
             # Check Location
-            echo "Current for inventory file"
-            ls -ltr ~/project/.circleci/ansible/
+            echo "Check inventory file"
+            cat ~/project/.circleci/ansible/inventory.txt
             cat mig_results.txt
             exit 1
       # - persist_to_workspace:
