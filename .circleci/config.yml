@@ -379,6 +379,8 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
+            echo "BACKEND IP HERE:"
+            echo ${BACKEND_IP:-NULL}          
             # Fetch and prepare the BACKEND_IP env var
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
