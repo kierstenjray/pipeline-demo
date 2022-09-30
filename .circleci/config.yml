@@ -312,6 +312,9 @@ jobs:
           root: ~/project/.circleci/ansible/
           paths:
             - inventory.txt
+      - persist_to_workspace:
+          root: ~/project/.circleci/ansible/
+          paths:
             - new-env-vars
       - run:
           name: Rollback and delete on failure
