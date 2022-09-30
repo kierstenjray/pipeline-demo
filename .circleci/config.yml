@@ -372,8 +372,8 @@ jobs:
             sudo apt-get -y -qq update
             sudo apt-get -qq install awscli
             sudo apt-get -y -qq install python3
-      - attach_workspace:
-          at: .circleci/ansible
+      # - attach_workspace:
+      #     at: .circleci/ansible
       - run:
           name: Get backend url
           command: |
