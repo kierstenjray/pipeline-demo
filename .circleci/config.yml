@@ -275,46 +275,6 @@ jobs:
             # exit 1
           when: on_fail
 
-  deploy-frontend:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: install awscli
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get -qq install awscli
-            sudo apt-get -y -qq install python3
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: .circleci/ansible
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "API_URL = ${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
-            cat frontend/.env
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-      - run:
-          name: Deploy frontend objects
-          command: |
-            cd frontend
-            npm install
-            npm run build
-            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      - run:
-          name: Rollback and delete on failure
-          command: |
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            # exit 1
-          when: on_fail
-
   deploy-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -344,10 +304,10 @@ jobs:
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - persist_to_workspace:
-          root: ~/project/.circleci/ansible/
-          paths:
-            - inventory.txt
+      # - persist_to_workspace:
+      #     root: ~/project/.circleci/ansible/
+      #     paths:
+      #       - inventory.txt
       - run:
           name: Rollback and delete on failure
           command: |
@@ -356,6 +316,49 @@ jobs:
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             # exit 1
           when: on_fail
+
+  deploy-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: install awscli
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get -qq install awscli
+            sudo apt-get -y -qq install python3
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .circleci/ansible
+      - run:
+          name: Get backend url
+          command: |
+            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "API_URL = ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            npm install
+            npm run build
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+      - persist_to_workspace:
+          root: ~/project/.circleci/ansible/
+          paths:
+            - inventory.txt            
+      - run:
+          name: Rollback and delete on failure
+          command: |
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            # exit 1
+          when: on_fail
+
 
   smoke-test:
     docker:
@@ -376,21 +379,21 @@ jobs:
       #       export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
       #       echo "BACKEND IP HERE:"
       #       echo ${BACKEND_IP:-NULL}
-      - run:
-          name: Backend smoke test.
-          command: |
-            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
-            echo "BACKEND IP HERE:"
-            echo ${BACKEND_IP:-NULL}          
-            # Fetch and prepare the BACKEND_IP env var
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-            if curl "${API_URL}/api/status" | grep "ok"
-            then
-                exit 1
-            else
-                exit 1
-            fi
+      # - run:
+      #     name: Backend smoke test.
+      #     command: |
+      #       export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+      #       echo "BACKEND IP HERE:"
+      #       echo ${BACKEND_IP:-NULL}          
+      #       # Fetch and prepare the BACKEND_IP env var
+      #       export API_URL="http://${BACKEND_IP}:3030"
+      #       echo "${API_URL}"
+      #       if curl "${API_URL}/api/status" | grep "ok"
+      #       then
+      #           exit 1
+      #       else
+      #           exit 1
+      #       fi
       - run:
           name: Frontend smoke test.
           command: |
