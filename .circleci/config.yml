@@ -370,15 +370,16 @@ jobs:
             sudo apt-get -y -qq update
             sudo apt-get -qq install awscli
             sudo apt-get -y -qq install python3
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
-            echo "BACKEND IP HERE:"
-            echo ${BACKEND_IP:-NULL}
+      # - run:
+      #     name: Get backend url
+      #     command: |
+      #       export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+      #       echo "BACKEND IP HERE:"
+      #       echo ${BACKEND_IP:-NULL}
       - run:
           name: Backend smoke test.
           command: |
+            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
             echo "BACKEND IP HERE:"
             echo ${BACKEND_IP:-NULL}          
             # Fetch and prepare the BACKEND_IP env var
