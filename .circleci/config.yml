@@ -297,6 +297,7 @@ jobs:
             cat frontend/.env
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
+            echo "export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)" >>.circleci/ansible/new-env-vars
       - run:
           name: Deploy frontend objects
           command: |
@@ -309,6 +310,7 @@ jobs:
           root: ~/project/.circleci/ansible/
           paths:
             - inventory.txt
+            - new-env-vars
       - run:
           name: Rollback and delete on failure
           command: |
@@ -326,7 +328,6 @@ jobs:
           fingerprints:
             - "34:33:86:6c:cf:c3:95:67:7d:e7:91:8a:c0:af:15:a1"
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
           at: .circleci/ansible
       - run:
           name: Install dependencies
@@ -349,6 +350,11 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
+      - persist_to_workspace:
+          root: ~/project/.circleci/ansible/
+          paths:
+            - new-env-vars
+            - inventory.txt
       - run:
           name: Rollback and delete on failure
           command: |
@@ -358,28 +364,57 @@ jobs:
           when: on_fail
       
 
-#   smoke-test:
-#     docker:
-#       # Lightweight Docker image 
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#       - run:
-#           name: Backend smoke test.
-#           command: |
-#             # your code here
-#       - run:
-#           name: Frontend smoke test.
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  smoke-test:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get -qq install awscli
+            sudo apt-get -y -qq install python3
+      - attach_workspace:
+          at: .circleci/ansible
+      - run:
+          name: Get backend url
+          command: |
+            cat .circleci/ansible/new-env-vars >> $BASH_ENV
+            echo "BACKEND IP HERE:"
+            echo ${BACKEND_IP:-NULL}
+      - run:
+          name: Backend smoke test.
+          command: |
+            # Fetch and prepare the BACKEND_IP env var
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
+      - run:
+          name: Frontend smoke test.
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
+            echo ${URL} 
+            if curl -s ${URL} | grep "Welcome"
+            then
+                # Change this to 0 after the job fails
+              return 1
+            else
+              return 1
+            fi
+      - run:
+          name: Rollback and delete on failure
+          command: |
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            # exit 1
+          when: on_fail
+
 
 #   cloudfront-update:
 #     docker:
