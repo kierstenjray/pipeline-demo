@@ -408,11 +408,13 @@ jobs:
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
+
+
   cloudfront-update:
     docker:
       - image: cimg/aws:2022.09
     steps:
-      checkout
+      - checkout
       # - run:
       #     name: Install dependencies
       #     command: |
