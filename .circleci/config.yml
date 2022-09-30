@@ -366,14 +366,14 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - attach_workspace:
+          at: .circleci/ansible      
       - run:
           name: Install dependencies
           command: |
             sudo apt-get -y -qq update
             sudo apt-get -qq install awscli
             sudo apt-get -y -qq install python3
-      # - attach_workspace:
-      #     at: .circleci/ansible
       - run:
           name: Get backend url
           command: |
