@@ -347,17 +347,11 @@ jobs:
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
-            echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt
-            echo "Current location is -------"
-            pwd
-            echo "Current location contents -------"
-            ls -ltr            
             ansible-playbook -i inventory.txt deploy-backend.yml
       - persist_to_workspace:
           root: ~/project/.circleci/ansible/
           paths:
-            - new-env-vars
+            - inventory.txt
       - run:
           name: Rollback and delete on failure
           command: |
