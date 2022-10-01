@@ -10,9 +10,9 @@
 
 - name: Build Node Service
   shell: |
-  cd /home/ubuntu/backend
-  npm run build
-  pm2 start npm --name backend -- start"
+  cd /home/ubuntu/backend \
+  npm run build \
+  pm2 start npm --name backend -- start" \
   pm2 ls
 
 # - name: Start app with PM2
