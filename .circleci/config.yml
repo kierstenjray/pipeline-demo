@@ -172,7 +172,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: ansible/centos7-ansible:stable
+      - image: centos:centos8
     steps:
       - checkout
       - add_ssh_keys:
@@ -186,6 +186,7 @@ jobs:
           #  Verify tar, gzip, ansible, or awscli installs.
           command: |
             #Install unzip for aws installation
+            sudo dnf -y install ansible
             yum -y install zip unzip
             yum -y install zip sudo
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
