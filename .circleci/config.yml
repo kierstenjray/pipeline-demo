@@ -299,9 +299,10 @@ jobs:
             dnf -y install epel-release
             dnf -y distro-sync
             dnf -y install sudo
+            sudo dnf -y install nodejs
+            npm --version
             sudo dnf -y install ansible
             yum -y install zip unzip
-            yum -y install zip sudo
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
