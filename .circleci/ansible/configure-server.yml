@@ -23,7 +23,7 @@
     #     timeout: 600
 
     - name: "install python for Ansible."
-      raw: sudo apt install -y python3
+      shell: sudo apt install -y python3
       # when: check_python.rc != 0
 
     - name: "Install nodejs"
