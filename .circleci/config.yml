@@ -186,7 +186,7 @@ jobs:
           #  Verify tar, gzip, ansible, or awscli installs.
           command: |
             #Install unzip for aws installation
-            yum -y install sudo
+            dnf install sudo
             sudo dnf -y install ansible
             yum -y install zip unzip
             yum -y install zip sudo
