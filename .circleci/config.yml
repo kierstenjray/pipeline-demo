@@ -401,13 +401,14 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+            export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress[]" --filters "Name=tag-key,Values=aws:cloudformation:stack-name" "Name=tag-value,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" --output=text)
             echo "BACKEND IP HERE:"
             echo ${BACKEND_IP:-NULL}
       - run:
           name: Backend smoke test.
           command: |
-            export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+            # export BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+            export BACKEND_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress[]" --filters "Name=tag-key,Values=aws:cloudformation:stack-name" "Name=tag-value,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" --output=text)            
             echo "BACKEND IP HERE:"
             echo ${BACKEND_IP:-NULL}          
             # Fetch and prepare the BACKEND_IP env var
