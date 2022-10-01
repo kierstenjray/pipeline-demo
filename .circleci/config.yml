@@ -187,15 +187,15 @@ jobs:
           command: |
             #Install unzip for aws installation
             dnf -y --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
-            # dnf distro-sync
-            # dnf -y install sudo
-            # sudo dnf -y install ansible
-            # yum -y install zip unzip
-            # yum -y install zip sudo
-            # curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            # unzip awscliv2.zip
-            # sudo ./aws/install
-            # cat .circleci/ansible/inventory.txt
+            dnf -y distro-sync
+            dnf -y install sudo
+            sudo dnf -y install ansible
+            yum -y install zip unzip
+            yum -y install zip sudo
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            cat .circleci/ansible/inventory.txt
             # exit 1
       - run:
           name: Configure server
