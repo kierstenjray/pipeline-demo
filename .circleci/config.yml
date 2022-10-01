@@ -187,6 +187,7 @@ jobs:
           command: |
             #Install unzip for aws installation
             dnf -y --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
+            dnf install epel-release
             dnf -y distro-sync
             dnf -y install sudo
             sudo dnf -y install ansible
