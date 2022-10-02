@@ -312,8 +312,14 @@ jobs:
             npm i
             npm run build
             cd ..
-            echo "Zip the directory"
+            echo "Tar the directory"
             tar -C backend -czvf artifact.tar.gz .
+            echo "where am i"
+            pwd
+            echo "Check contents"
+            ls
+            echo "Check for artifact"
+            ls /root/project/
             cd .circleci/ansible
             echo "Run the Ansible deploy-back Playbook"            
             ansible-playbook -i inventory.txt deploy-backend.yml
