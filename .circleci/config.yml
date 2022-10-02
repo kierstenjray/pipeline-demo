@@ -308,8 +308,9 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            echo "navigate to the bkend directory"
             cd backend
-            npm i
+            # npm i
             npm run build
             cd ..
             echo "Tar the directory"
