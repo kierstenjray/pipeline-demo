@@ -466,7 +466,7 @@ jobs:
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
-cleanup:
+  cleanup:
     docker:
       - image: circleci/node:13.8.0
     steps:
