@@ -282,7 +282,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: centos:centos8
+      - image: python:3.9.0-alpine
     steps:
       - checkout
       - add_ssh_keys:
@@ -292,42 +292,48 @@ jobs:
           at: .circleci/ansible
       - run:
           name: Install dependencies
+          working_directory: ./.circleci/ansible
           #  Verify tar, gzip, ansible, or awscli installs.
           command: |
-            dnf -y --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
-            dnf -y install epel-release
-            dnf -y distro-sync
-            dnf -y install sudo
-            sudo dnf -y install nodejs
-            npm --version
-            sudo dnf -y install ansible
-            yum -y install zip unzip
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+            apk add --update ansible curl rsync openssh nodejs npm unzip
+            npm install
+            ansible --version
+            pip3 install --upgrade pip
+            pip3 install awscli
+            aws --version 
+            export ANSIBLE_HOST_KEY_CHECKING=False
       - run:
           name: Deploy backend
           command: |
             echo "navigate to the bkend directory"
-            cd backend
-            # npm i
+            cd /root/project/backend
+            npm install
+      - run:
+          name: build backend dist
+          command: |
+            cd /root/project/backend
+            npm i
             npm run build
-            cd ..
-            echo "Tar the directory"
-            tar -C backend -czvf artifact.tar.gz .
-            echo "where am i"
+            npm run prestart:prod      
+      - run:
+          name: Compress dist files on SYSTEM
+          command: |
+            cd /root/project
             pwd
-            echo "Check contents"
-            ls
-            echo "Check for artifact"
-            ls /root/project/
-            cd .circleci/ansible
-            echo "Run the Ansible deploy-back Playbook"            
-            ansible-playbook -i inventory.txt deploy-backend.yml
-      # - persist_to_workspace:
-      #     root: ~/project/.circleci/ansible/
-      #     paths:
-      #       - inventory.txt
+            tar -cvzf backend.tar.gz backend
+      - run:
+          name: Deploy backend
+          working_directory: ./.circleci/ansible
+          no_output_timeout: 30m          
+          command: |
+            pwd
+            export ANSIBLE_HOST_KEY_CHECKING=False 
+            export host_key_checking=False
+            export record_host_keys=False
+            cat inventory.txt
+            echo "test 2"
+            cat ~/project/.circleci/ansible/inventory.txt
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml -vv
       - run:
           name: Rollback and delete on failure
           command: |
