@@ -71,18 +71,19 @@
   - name: "Install Node binaries"
     become: true
     command: |
-      cd /usr/local/bin/node_exporter
+      cd /home/ubuntu/node_exporter
       wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
 
 
   - name: "Check for node exporter tar file"
     become: true
-    command:
-      ls -l /usr/local/bin/node_exporter
+    command: |
+      ls
+      ls -l /home/ubuntu/node_exporter/bin/node_exporter
 
   - name: "Unarchive node exporter"
     ansible.builtin.unarchive:
-      src: node_exporter-1.0.1.linux-amd64.tar.gz
+      src: /home/ubuntu/node_exporter/bin/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
       dest: /usr/local/bin/node_exporter
 
   - name: "Tar and cleanup"
