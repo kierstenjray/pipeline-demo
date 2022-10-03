@@ -73,7 +73,7 @@
       group: ubuntu
       mode: 0755
 
-- name: Unarchive node exporter
+- name: "Unarchive node exporter"
   ansible.builtin.unarchive:
     src: node_exporter-1.0.1.linux-amd64.tar.gz
     dest: /usr/local/bin/node_exporter
@@ -86,7 +86,7 @@
       sudo cp /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
       rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
-  - name: Copy service file
+  - name: "Copy service file"
     become: true
     copy:
       src: /root/project/node-exporter.service
