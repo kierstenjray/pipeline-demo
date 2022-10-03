@@ -47,6 +47,42 @@
     command: pm2 start -f ./main.js
     args:
       chdir: /home/ubuntu/uda_people/backend/dist
+
+  - name: "Create Prometheus user"
+    become: true
+    command:
+      sudo useradd --no-create-home node_exporter
+
+  - name: "Install Node binaries"
+    become: true
+    command: |
+      wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+      tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
+      sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
+      rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+
+  - name: Copy service file
+    become: true
+    copy:
+      src: /root/project/node-exporter.service
+      dest: /etc/systemd/system
+      owner: ubuntu
+      group: ubuntu
+      mode: 0755
+
+  - name: "Check for service file"
+    become: true
+    command:
+      ls -l /etc/systemd/system/node-exporter.service
+
+  - name: "Configure systemd"
+    become: true
+    command: |
+      sudo systemctl daemon-reload
+      sudo systemctl enable node-exporter
+      sudo systemctl start node-exporter
+      sudo systemctl status node-exporter
+
     environment:
      ENVIRONMENT: production
      TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
