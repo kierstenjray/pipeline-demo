@@ -73,11 +73,10 @@
       group: ubuntu
       mode: 0755
 
-- name: "Unarchive node exporter"
-  ansible.builtin.unarchive:
-    src: node_exporter-1.0.1.linux-amd64.tar.gz
-    dest: /usr/local/bin/node_exporter
-    remote_src: yes
+  - name: "Unarchive node exporter"
+    ansible.builtin.unarchive:
+      src: node_exporter-1.0.1.linux-amd64.tar.gz
+      dest: /usr/local/bin/node_exporter
 
   - name: "Tar and cleanup"
     become: true
