@@ -71,6 +71,8 @@
   - name: "Install Node binaries"
     become: true
     command: |
+      echo "Check Node Explorer list"
+      ls /home/ubuntu
       cd /home/ubuntu/node_exporter
       wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
 
