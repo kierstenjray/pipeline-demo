@@ -270,7 +270,7 @@ jobs:
               if grep -q "has been executed successfully." ~/project/backend/mig_results.txt
               then
                   # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
-                  curl https://kvdb.io/mqvGexL4RpDBQnpSSYg/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+                  curl https://kvdb.io/47GneXwE8BN2tpAX7ng2RsFz/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
               fi
       - run:
           name: Rollback and delete on failure
