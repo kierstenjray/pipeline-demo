@@ -177,7 +177,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "77:e9:e0:0e:f6:08:8a:6b:2b:d7:fc:65:e4:3a:07:c8:3b:09:76:d7"
+            - "8c:13:77:a0:f0:94:c2:9e:bc:22:a5:ae:1c:7b:01:07"
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: .circleci/ansible
@@ -287,7 +287,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "77:e9:e0:0e:f6:08:8a:6b:2b:d7:fc:65:e4:3a:07:c8:3b:09:76:d7"
+            - "8c:13:77:a0:f0:94:c2:9e:bc:22:a5:ae:1c:7b:01:07"
       - attach_workspace:
           at: .circleci/ansible
       - run:
