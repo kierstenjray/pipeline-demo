@@ -81,7 +81,7 @@
     become: true
     command: |
       ls
-      ls -l /home/ubuntu/node_exporter/bin/node_exporter
+      ls -l /home/ubuntu/node_exporter
 
   - name: "Unarchive node exporter"
     ansible.builtin.unarchive:
