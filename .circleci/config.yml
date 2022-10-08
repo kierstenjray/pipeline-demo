@@ -326,11 +326,24 @@ jobs:
           working_directory: ./.circleci/ansible
           no_output_timeout: 30m          
           command: |
+            pwd
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
             export record_host_keys=False
+            cat inventory.txt
+            echo "test 2"
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml -vv
+      # - run:
+      #     name: Run deploy play
+      #     working_directory: ./.circleci/ansible
+      #     no_output_timeout: 30m          
+      #     command: |
+      #       export ANSIBLE_HOST_KEY_CHECKING=False 
+      #       export host_key_checking=False
+      #       export record_host_keys=False
+      #       cat ~/project/.circleci/ansible/inventory.txt
+      #       ansible-playbook -i ~/project/.circleci/ansible/inventory.txt deploy-backend.yml -vv
       - run:
           name: Rollback and delete on failure
           command: |

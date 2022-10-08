@@ -84,13 +84,6 @@
       group: ubuntu
       mode: 0755      
 
-  # - name: "Tar and cleanup"
-  #   become: true
-  #   command: |
-  #     # tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
-  #     sudo cp /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
-  #     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
-
   - name: "Copy service file"
     become: true
     copy:
@@ -100,18 +93,14 @@
       group: ubuntu
       mode: 0755
 
-  # - name: "Check for service file"
-  #   become: true
-  #   command:
-  #     ls -l /etc/systemd/system/node-exporter.service
 
-  # - name: "Configure systemd"
-  #   become: true
-  #   command: |
-  #     sudo systemctl daemon-reload
-  #     sudo systemctl enable node-exporter
-  #     sudo systemctl start node-exporter
-  #     sudo systemctl status node-exporter
+  - name: "Configure systemd"
+    become: true
+    command: |
+      sudo systemctl daemon-reload
+      sudo systemctl enable node-exporter
+      sudo systemctl start node-exporter
+      sudo systemctl status node-exporter
 
     environment:
      ENVIRONMENT: production
