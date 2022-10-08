@@ -89,6 +89,7 @@
     unarchive:
       src: /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
       dest: /usr/local/bin/node_exporter
+      remote_src: True
       owner: ubuntu
       group: ubuntu
       mode: 0755      
