@@ -62,7 +62,7 @@
 
   - name: Make dest node exporter directory in /usr/local/bin/node_exporter
     file:
-      path: /home/ubuntu/node_exporter
+      path: /usr/local/bin/node_exporter
       state: directory
       mode: 0755
 
