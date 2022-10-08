@@ -64,6 +64,9 @@
     get_url:
       url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
       dest: /home/ubuntu/node_exporter
+      owner: ubuntu
+      group: ubuntu
+      mode: 0755      
       # mode: 0755
 
   # - name: "Install Node binaries"
@@ -86,6 +89,9 @@
     unarchive:
       src: /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
       dest: /usr/local/bin/node_exporter
+      owner: ubuntu
+      group: ubuntu
+      mode: 0755      
 
   # - name: "Tar and cleanup"
   #   become: true
