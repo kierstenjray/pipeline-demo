@@ -53,27 +53,18 @@
     command:
       sudo useradd --no-create-home node_exporter
 
-  - name: "Install wget"
-    apt:
-      update_cache: yes
-      name: wget
-      state: present
-
-  # - name: "Create directory"
-  #   become: true
-  #   file:
-  #     path: /home/ubuntu/node_exporter
-  #     state: directory
-  #     owner: ubuntu
-  #     group: ubuntu
-  #     mode: 0755
-
 
   - name: Make node exporter directory in /home/ubuntu/node_exporter
     file:
       path: /home/ubuntu/node_exporter
       state: directory
       mode: 0755
+
+  - name: Make node exporter directory in /home/ubuntu/node_exporter
+    file:
+      path: /usr/local/bin/node_exporter
+      state: directory
+      mode: 0755 
 
   - name: GET Node Exporter packages
     get_url:
@@ -96,10 +87,10 @@
   #     echo "check for node exporter file!!!"
   #     ls -l /home/ubuntu/node_exporter
 
-  # - name: "Unarchive node exporter"
-  #   ansible.builtin.unarchive:
-  #     src: /home/ubuntu/node_exporter/bin/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
-  #     dest: /usr/local/bin/node_exporter
+  - name: "Unarchive node exporter"
+    ansible.builtin.unarchive:
+      src: /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
+      dest: /usr/local/bin/node_exporter
 
   # - name: "Tar and cleanup"
   #   become: true
