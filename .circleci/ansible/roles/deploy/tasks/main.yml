@@ -59,63 +59,79 @@
       name: wget
       state: present
 
-  - name: "Create directory"
-    become: true
+  # - name: "Create directory"
+  #   become: true
+  #   file:
+  #     path: /home/ubuntu/node_exporter
+  #     state: directory
+  #     owner: ubuntu
+  #     group: ubuntu
+  #     mode: 0755
+
+
+  - name: Make directory mysql-server in /home/ubuntu/node_exporter
     file:
       path: /home/ubuntu/node_exporter
       state: directory
-      owner: ubuntu
-      group: ubuntu
       mode: 0755
 
-  - name: "Install Node binaries"
-    become: true
-    command: |
-      echo "Check Node Explorer list"
-      ls /home/ubuntu
-      cd /home/ubuntu/node_exporter
-      wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+  # - name: GET MySQL-server packages      
+
+  #     get_url:
+
+  #       url: “https://downloads.mysql.com/archives/get/p/23/file/mysql-server_8.0.22-1debian10_amd64.deb-bundle.tar”        
+
+  #      dest: ~/.local/mysql-server
+  #     mode: 0777
+
+  # - name: "Install Node binaries"
+  #   become: true
+  #   command: |
+  #     echo "Check Node Explorer list"
+  #     ls /home/ubuntu
+  #     cd /home/ubuntu/node_exporter
+  #     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
 
 
   - name: "Check for node exporter tar file"
     become: true
     command: |
-      ls
+      echo "check for node exporter file!!!"
       ls -l /home/ubuntu/node_exporter
 
-  - name: "Unarchive node exporter"
-    ansible.builtin.unarchive:
-      src: /home/ubuntu/node_exporter/bin/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
-      dest: /usr/local/bin/node_exporter
+  # - name: "Unarchive node exporter"
+  #   ansible.builtin.unarchive:
+  #     src: /home/ubuntu/node_exporter/bin/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
+  #     dest: /usr/local/bin/node_exporter
 
-  - name: "Tar and cleanup"
-    become: true
-    command: |
-      # tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
-      sudo cp /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
-      rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+  # - name: "Tar and cleanup"
+  #   become: true
+  #   command: |
+  #     # tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
+  #     sudo cp /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
+  #     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
-  - name: "Copy service file"
-    become: true
-    copy:
-      src: /root/project/node-exporter.service
-      dest: /etc/systemd/system
-      owner: ubuntu
-      group: ubuntu
-      mode: 0755
+  # - name: "Copy service file"
+  #   become: true
+  #   copy:
+  #     src: /root/project/node-exporter.service
+  #     dest: /etc/systemd/system
+  #     owner: ubuntu
+  #     group: ubuntu
+  #     mode: 0755
 
-  - name: "Check for service file"
-    become: true
-    command:
-      ls -l /etc/systemd/system/node-exporter.service
+  # - name: "Check for service file"
+  #   become: true
+  #   command:
+  #     ls -l /etc/systemd/system/node-exporter.service
 
-  - name: "Configure systemd"
-    become: true
-    command: |
-      sudo systemctl daemon-reload
-      sudo systemctl enable node-exporter
-      sudo systemctl start node-exporter
-      sudo systemctl status node-exporter
+  # - name: "Configure systemd"
+  #   become: true
+  #   command: |
+  #     sudo systemctl daemon-reload
+  #     sudo systemctl enable node-exporter
+  #     sudo systemctl start node-exporter
+  #     sudo systemctl status node-exporter
 
     environment:
      ENVIRONMENT: production
