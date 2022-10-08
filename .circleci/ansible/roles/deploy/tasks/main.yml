@@ -88,7 +88,7 @@
   #     ls -l /home/ubuntu/node_exporter
 
   - name: "Unarchive node exporter"
-    ansible.builtin.unarchive:
+    unarchive:
       src: /home/ubuntu/node_exporter/node_exporter-1.0.1.linux-amd64.tar.gz
       dest: /usr/local/bin/node_exporter
 
