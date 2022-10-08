@@ -75,14 +75,11 @@
       state: directory
       mode: 0755
 
-  # - name: GET MySQL-server packages      
-
-  #     get_url:
-
-  #       url: “https://downloads.mysql.com/archives/get/p/23/file/mysql-server_8.0.22-1debian10_amd64.deb-bundle.tar”        
-
-  #      dest: ~/.local/mysql-server
-  #     mode: 0777
+  - name: GET Node Exporter packages
+      get_url:
+        url: “https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz”        
+        dest: /home/ubuntu/node_exporter
+      mode: 0755
 
   # - name: "Install Node binaries"
   #   become: true
@@ -93,11 +90,11 @@
   #     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
 
 
-  - name: "Check for node exporter tar file"
-    become: true
-    command: |
-      echo "check for node exporter file!!!"
-      ls -l /home/ubuntu/node_exporter
+  # - name: "Check for node exporter tar file"
+  #   become: true
+  #   command: |
+  #     echo "check for node exporter file!!!"
+  #     ls -l /home/ubuntu/node_exporter
 
   # - name: "Unarchive node exporter"
   #   ansible.builtin.unarchive:
