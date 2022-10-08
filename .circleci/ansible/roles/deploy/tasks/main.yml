@@ -69,16 +69,16 @@
   #     mode: 0755
 
 
-  - name: Make directory mysql-server in /home/ubuntu/node_exporter
+  - name: Make node exporter directory in /home/ubuntu/node_exporter
     file:
       path: /home/ubuntu/node_exporter
       state: directory
       mode: 0755
 
   - name: GET Node Exporter packages
-      get_url:
-        url: “https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz”        
-        dest: /home/ubuntu/node_exporter
+    get_url:
+      url: “https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz”        
+      dest: /home/ubuntu/node_exporter
       mode: 0755
 
   # - name: "Install Node binaries"
