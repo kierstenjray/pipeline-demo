@@ -98,9 +98,22 @@
     become: true
     command: |
       sudo systemctl daemon-reload
+
+  - name: "Configure systemd 2"
+    become: true
+    command: |
       sudo systemctl enable node-exporter
+
+  - name: "Configure systemd 3"
+    become: true
+    command: |
       sudo systemctl start node-exporter
+
+  - name: "Configure systemd 4"
+    become: true
+    command: |
       sudo systemctl status node-exporter
+
 
     environment:
      ENVIRONMENT: production
