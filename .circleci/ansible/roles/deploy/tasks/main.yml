@@ -109,10 +109,10 @@
     command: |
       sudo systemctl start node-exporter
 
-  - name: "Configure systemd 4"
-    become: true
-    command: |
-      sudo systemctl status node-exporter
+  # - name: "Configure systemd 4"
+  #   become: true
+  #   command: |
+  #     sudo systemctl status node-exporter
 
 
     environment:
